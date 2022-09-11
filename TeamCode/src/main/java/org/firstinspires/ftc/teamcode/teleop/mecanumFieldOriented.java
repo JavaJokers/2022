@@ -56,6 +56,7 @@ public class mecanumFieldOriented extends LinearOpMode {
     public static Orientation angles;
     public static Acceleration gravity;
     int ticks = 0;
+    int intakeTrackPos = 180;
 
     BNO055IMU imu;
 
@@ -100,6 +101,7 @@ public class mecanumFieldOriented extends LinearOpMode {
         lB.setDirection(DcMotor.Direction.FORWARD);
         rB.setDirection(DcMotor.Direction.REVERSE);
         rd4b.setDirection(DcMotor.Direction.FORWARD);
+        slide.setDirection(DcMotor.Direction.FORWARD);
 
         // Set zero power behavior
         lF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -107,6 +109,7 @@ public class mecanumFieldOriented extends LinearOpMode {
         lB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rd4b.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -166,16 +169,28 @@ public class mecanumFieldOriented extends LinearOpMode {
                 initIMU(hardwareMap);
             }
 
+            //linear slide
+            if(gamepad2.dpad_left){
+                slide.setPower(0.4);
+            }else if(gamepad2.dpad_right){
+                slide.setPower(-0.4);
+            }else{
+                slide.setPower(0);
+            }
+
 
             //lift control
             ticks = ticks - (-(int) gamepad2.left_stick_y * 2);
             rd4b.setTargetPosition(ticks);
             rd4b.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            //Manual Arm Movement
+
+            //intake track
+            intakeTrack.setPosition(intakeTrackPos);
+
+            intakeTrackPos -= gamepad2.right_stick_y;
 
 
-            // Show the wheel power.
 
             telemetry.addData("Lift Position", ticks);
             telemetry.update();
