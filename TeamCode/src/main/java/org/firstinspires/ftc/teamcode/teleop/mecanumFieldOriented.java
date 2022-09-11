@@ -33,7 +33,10 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -78,12 +81,13 @@ public class mecanumFieldOriented extends LinearOpMode {
         DcMotor lB = hardwareMap.dcMotor.get("back_left");
         DcMotor rF = hardwareMap.dcMotor.get("front_right");
         DcMotor rB = hardwareMap.dcMotor.get("back_right");
-        DcMotor arm1 = hardwareMap.dcMotor.get("arm1");
-        DcMotor duckies = hardwareMap.dcMotor.get("duckies");
-        Servo wrist1 = hardwareMap.servo.get("wrist");
-        Servo grabber = hardwareMap.servo.get("grabber");
+        DcMotor rd4b = hardwareMap.dcMotor.get("rd4b");
+        DcMotor slide = hardwareMap.dcMotor.get("slide");
+        CRServo intake = hardwareMap.crservo.get("intake");
+        Servo intakeTrack = hardwareMap.servo.get("intakeTrack");
+        Servo turret0 = hardwareMap.servo.get("turret0");
+        Servo turret1 = hardwareMap.servo.get("turret1");
         BNO055IMU imu = hardwareMap.get(BNO055IMU.class, "imu");
-
 
 
         initIMU(hardwareMap);
@@ -95,14 +99,14 @@ public class mecanumFieldOriented extends LinearOpMode {
         rF.setDirection(DcMotor.Direction.REVERSE);
         lB.setDirection(DcMotor.Direction.FORWARD);
         rB.setDirection(DcMotor.Direction.REVERSE);
+        rd4b.setDirection(DcMotor.Direction.FORWARD);
 
         // Set zero power behavior
         lF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        arm1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
+        rd4b.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -157,59 +161,23 @@ public class mecanumFieldOriented extends LinearOpMode {
 
             }
 
-            //set grabber positions
-            if (gamepad2.a) {
-                grabber.setPosition(0.7);
-                telemetry.addLine("position 20");
-                telemetry.update();
-            } else if (gamepad2.b) {
-                grabber.setPosition(0.45);
-                telemetry.addLine("position 30");
-                telemetry.update();
-            } else if (gamepad2.y) {
-                grabber.setPosition(0.1);
-                telemetry.addLine("position 50");
-                telemetry.update();
-            }
-
-            //set wrist position
-            wrist1.setPosition(gamepad2.right_trigger);
-
-            //TODO
-            //set wrist position option 2
-
-            if(gamepad2.dpad_up){
-                wrist1.setPosition(1);
-            } else if(gamepad2.dpad_right){
-                wrist1.setPosition(0.7);
-            } else if(gamepad2.dpad_down){
-                wrist1.setPosition(0.5);
-            } else if(gamepad2.dpad_left){
-                wrist1.setPosition(0.3);
+            //reinitialize field oriented
+            if (gamepad2.y) {
+                initIMU(hardwareMap);
             }
 
 
-            //TODO
-            //set arm positions
-
+            //lift control
             ticks = ticks - (-(int) gamepad2.left_stick_y * 2);
-            arm1.setTargetPosition(ticks);
-            arm1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rd4b.setTargetPosition(ticks);
+            rd4b.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             //Manual Arm Movement
 
 
-
-            //control carousel wheel
-            if (gamepad1.x || gamepad2.x) {
-                duckies.setPower(-0.8);
-            } else {
-                duckies.setPower(0);
-            }
-
             // Show the wheel power.
-            telemetry.addData("Motors", "carousel");
-            telemetry.addData("Arm Position", ticks);
+
+            telemetry.addData("Lift Position", ticks);
             telemetry.update();
         }
     }
