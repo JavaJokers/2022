@@ -145,10 +145,10 @@ public class mecanumFieldOriented extends LinearOpMode {
 
             // Send calculated power to motors
             if (gamepad1.right_bumper) {
-                lF.setPower(frontLeftPower * 0.25);
-                rF.setPower(frontRightPower * 0.25);
-                lB.setPower(backLeftPower * 0.25);
-                rB.setPower(backRightPower * 0.25);
+                lF.setPower(frontLeftPower * 0.75);
+                rF.setPower(frontRightPower * 0.75);
+                lB.setPower(backLeftPower * 0.75);
+                rB.setPower(backRightPower * 0.75);
 
             } else if (gamepad1.left_bumper) {
                 lF.setPower(frontLeftPower * 0.25);
