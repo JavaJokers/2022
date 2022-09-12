@@ -204,6 +204,20 @@ public class mecanumFieldOriented extends LinearOpMode {
             }
 
 
+            //limit grid values
+            if(gridX < 0){
+                gridX = 0;
+            } else if(gridX > 5){
+                gridX = 5;
+            }
+
+            if(gridY < 0){
+                gridY = 0;
+            }else if(gridY > 5){
+                gridY = 5;
+            }
+
+
             //linear slide
             if(gamepad2.dpad_left){
                 slide.setPower(0.4);
