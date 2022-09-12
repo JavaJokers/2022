@@ -161,7 +161,6 @@ public class mecanumFieldOriented extends LinearOpMode {
                 rF.setPower(frontRightPower);
                 lB.setPower(backLeftPower);
                 rB.setPower(backRightPower);
-
             }
 
             //reinitialize field oriented
@@ -178,12 +177,22 @@ public class mecanumFieldOriented extends LinearOpMode {
                 slide.setPower(0);
             }
 
+            //intake
+            if(gamepad1.right_trigger == 1){
+                intake.setPower(0.6);
+                intakeTrack.setPosition(300);
+            }else if(gamepad1.left_trigger == 1){
+                intake.setPower(-0.6);
+                intakeTrack.setPosition(120);
+            }else{
+                intake.setPower(0);
+            }
+
 
             //lift control
             ticks = ticks - (-(int) gamepad2.left_stick_y * 2);
             rd4b.setTargetPosition(ticks);
             rd4b.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
 
             //intake track
             intakeTrack.setPosition(intakeTrackPos);
