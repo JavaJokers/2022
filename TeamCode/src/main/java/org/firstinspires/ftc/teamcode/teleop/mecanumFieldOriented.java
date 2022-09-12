@@ -46,6 +46,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
+import java.lang.reflect.Parameter;
 import java.util.Locale;
 
 
@@ -167,7 +168,7 @@ public class mecanumFieldOriented extends LinearOpMode {
 
             //reinitialize field oriented
             if (gamepad1.a && gamepad1.x) {
-                initIMU(hardwareMap);
+                imu.initialize(parameters1);
             }
 
             //linear slide
