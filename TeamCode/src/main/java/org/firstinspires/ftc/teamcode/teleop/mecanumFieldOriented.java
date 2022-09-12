@@ -60,6 +60,9 @@ public class mecanumFieldOriented extends LinearOpMode {
     int intakeTrackPos = 180;
     int turretPos = 180;
 
+    int gridX = 0;
+    int gridY = 0;
+
     //dpad vars
     private boolean isDpadLeft = false;
     private boolean isDpadRight = false;
@@ -182,6 +185,24 @@ public class mecanumFieldOriented extends LinearOpMode {
             if (gamepad1.a && gamepad1.x) {
                 imu.initialize(parameters1);
             }
+
+            //grid control
+            if((isDpadLeft = gamepad1.dpad_left) && !wasDpadLeft){
+                gridX --;
+            }
+
+            if((isDpadRight = gamepad1.dpad_Right) && !wasDpadRight){
+                gridX ++;
+            }
+
+            if((isDpadUp = gamepad1.dpad_up) && !wasDpadUp){
+                gridX ++;
+            }
+
+            if((isDpadDown = gamepad1.dpad_down) && !wasDpadDown){
+                gridX --;
+            }
+
 
             //linear slide
             if(gamepad2.dpad_left){
