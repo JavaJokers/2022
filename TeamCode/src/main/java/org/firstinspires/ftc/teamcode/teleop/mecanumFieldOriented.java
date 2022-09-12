@@ -180,10 +180,10 @@ public class mecanumFieldOriented extends LinearOpMode {
             }
 
             //intake
-            if(gamepad1.right_trigger == 1){
+            if(gamepad1.right_trigger == 1 || gamepad2.right_trigger == 1){
                 intake.setPower(0.6);
                 intakeTrackPos ++;
-            }else if(gamepad1.left_trigger == 1){
+            }else if(gamepad1.left_trigger == 1 || gamepad2.left_trigger == 1){
                 intake.setPower(-0.6);
                 intakeTrackPos --;
             }else{
@@ -198,7 +198,7 @@ public class mecanumFieldOriented extends LinearOpMode {
 
             //intake track
             intakeTrack.setPosition(intakeTrackPos);
-            intakeTrackPos -= gamepad2.right_stick_y;
+            intakeTrackPos -= gamepad2.right_stick_x;
 
             //turret
             turret0.setPosition(turretPos);
