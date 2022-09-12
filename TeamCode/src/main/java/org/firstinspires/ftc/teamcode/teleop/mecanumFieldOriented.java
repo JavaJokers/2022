@@ -164,7 +164,7 @@ public class mecanumFieldOriented extends LinearOpMode {
             }
 
             //reinitialize field oriented
-            if (gamepad2.y) {
+            if (gamepad1.a && gamepad1.x) {
                 initIMU(hardwareMap);
             }
 
