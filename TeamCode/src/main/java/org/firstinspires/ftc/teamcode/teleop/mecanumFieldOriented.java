@@ -58,6 +58,7 @@ public class mecanumFieldOriented extends LinearOpMode {
     int ticks = 0;
     int intakeTrackPos = 180;
     int turretPos = 180;
+    
 
     BNO055IMU imu;
 
@@ -181,10 +182,10 @@ public class mecanumFieldOriented extends LinearOpMode {
             //intake
             if(gamepad1.right_trigger == 1){
                 intake.setPower(0.6);
-                intakeTrack.setPosition(300);
+                intakeTrackPos ++;
             }else if(gamepad1.left_trigger == 1){
                 intake.setPower(-0.6);
-                intakeTrack.setPosition(120);
+                intakeTrackPos --;
             }else{
                 intake.setPower(0);
             }
