@@ -59,6 +59,18 @@ public class mecanumFieldOriented extends LinearOpMode {
     int ticks = 0;
     int intakeTrackPos = 180;
     int turretPos = 180;
+
+    //dpad vars
+    private boolean isDpadLeft = false;
+    private boolean isDpadRight = false;
+    private boolean isDpadUp = false;
+    private boolean isDpadDown = false;
+
+    private boolean wasDpadLeft = false;
+    private boolean wasDpadRight = false;
+    private boolean wasDpadUp = false;
+    private boolean wasDpadDown = false;
+
     
 
     BNO055IMU imu;
@@ -208,6 +220,11 @@ public class mecanumFieldOriented extends LinearOpMode {
 
             telemetry.addData("Lift Position", ticks);
             telemetry.update();
+
+            wasDpadLeft = isDpadLeft;
+            wasDpadRight = isDpadRight;
+            wasDpadUp = isDpadUp;
+            wasDpadDown = isDpadDown;
         }
     }
 
