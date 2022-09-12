@@ -253,6 +253,8 @@ public class mecanumFieldOriented extends LinearOpMode {
             turret1.setPosition(turretPos);
             turretPos -= gamepad2.left_stick_x;
 
+            telemetry.addData("Grid X", gridX);
+            telemetry.addData("Grid Y", gridY);
             telemetry.addData("Lift Position", ticks);
             telemetry.update();
 
