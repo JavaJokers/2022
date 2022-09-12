@@ -57,6 +57,7 @@ public class mecanumFieldOriented extends LinearOpMode {
     public static Acceleration gravity;
     int ticks = 0;
     int intakeTrackPos = 180;
+    int turretPos = 180;
 
     BNO055IMU imu;
 
@@ -196,10 +197,12 @@ public class mecanumFieldOriented extends LinearOpMode {
 
             //intake track
             intakeTrack.setPosition(intakeTrackPos);
-
             intakeTrackPos -= gamepad2.right_stick_y;
 
-
+            //turret
+            turret0.setPosition(turretPos);
+            turret1.setPosition(turretPos);
+            turretPos -= gamepad2.left_stick_x;
 
             telemetry.addData("Lift Position", ticks);
             telemetry.update();
