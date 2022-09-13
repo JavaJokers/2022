@@ -238,6 +238,8 @@ public class mecanumFieldOriented extends LinearOpMode {
                 intake.setPower(0);
             }
 
+
+            //set intake track to open and set to closed
             if(gamepad2.x){
                 intakeTrackPos = 180;
             }else if(gamepad2.a){
