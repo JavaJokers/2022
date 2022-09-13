@@ -238,6 +238,12 @@ public class mecanumFieldOriented extends LinearOpMode {
                 intake.setPower(0);
             }
 
+            if(gamepad2.x){
+                intakeTrackPos = 180;
+            }else if(gamepad2.a){
+                intakeTrack = 0;
+            }
+
 
             //lift control
             ticks = ticks - (-(int) gamepad2.left_stick_y * 2);
