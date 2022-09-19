@@ -57,8 +57,7 @@ public class mecanumFieldOriented extends LinearOpMode {
     public static Orientation angles;
     public static Acceleration gravity;
     int ticks = 0;
-    int intakeTrackPos = 180;
-    int turretPos = 180;
+    int upDownPos = 180;
 
     int gridX = 0;
     int gridY = 0;
@@ -100,12 +99,10 @@ public class mecanumFieldOriented extends LinearOpMode {
         DcMotor lB = hardwareMap.dcMotor.get("back_left");
         DcMotor rF = hardwareMap.dcMotor.get("front_right");
         DcMotor rB = hardwareMap.dcMotor.get("back_right");
-        DcMotor rd4b = hardwareMap.dcMotor.get("rd4b");
         DcMotor slide = hardwareMap.dcMotor.get("slide");
         CRServo intake = hardwareMap.crservo.get("intake");
-        Servo intakeTrack = hardwareMap.servo.get("intakeTrack");
-        Servo turret0 = hardwareMap.servo.get("turret0");
-        Servo turret1 = hardwareMap.servo.get("turret1");
+        Servo upDown0 = hardwareMap.servo.get("upDown0");
+        Servo upDown1 = hardwareMap.servo.get("upDown1");
         BNO055IMU imu = hardwareMap.get(BNO055IMU.class, "imu");
 
 
@@ -230,21 +227,13 @@ public class mecanumFieldOriented extends LinearOpMode {
             //intake
             if(gamepad1.right_trigger == 1 || gamepad2.right_trigger == 1){
                 intake.setPower(0.6);
-                intakeTrackPos ++;
             }else if(gamepad1.left_trigger == 1 || gamepad2.left_trigger == 1){
                 intake.setPower(-0.6);
-                intakeTrackPos --;
             }else{
                 intake.setPower(0);
             }
 
 
-            //set intake track to open and set to closed
-            if(gamepad2.x){
-                intakeTrackPos = 180;
-            }else if(gamepad2.a){
-                intakeTrack = 0;
-            }
 
 
             //lift control
@@ -252,14 +241,12 @@ public class mecanumFieldOriented extends LinearOpMode {
             rd4b.setTargetPosition(ticks);
             rd4b.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            //intake track
-            intakeTrack.setPosition(intakeTrackPos);
-            intakeTrackPos -= gamepad2.right_stick_x;
 
-            //turret
-            turret0.setPosition(turretPos);
-            turret1.setPosition(turretPos);
-            turretPos -= gamepad2.left_stick_x;
+            //up down
+            upDownPos -= gamepad2.left_stick_x;
+            upDown0.setPosition(upDownPos);
+            upDown1.setPosition(upDownPos);
+            
 
             telemetry.addData("Grid X", gridX);
             telemetry.addData("Grid Y", gridY);
