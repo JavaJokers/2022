@@ -244,15 +244,10 @@ public class mecanumFieldOriented extends LinearOpMode {
 
             //lift control
             ticks = ticks - (-(int) gamepad2.left_stick_y * 2);
-            rd4b.setTargetPosition(ticks);
-            rd4b.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-
-            //up down
-            upDownPos -= gamepad2.left_stick_x;
-            upDown0.setPosition(upDownPos);
-            upDown1.setPosition(upDownPos);
-            
+            upDown0.setTargetPosition(ticks);
+            upDown1.setTargetPosition(ticks);
+            upDown0.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            upDown1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             telemetry.addData("Grid X", gridX);
             telemetry.addData("Grid Y", gridY);
