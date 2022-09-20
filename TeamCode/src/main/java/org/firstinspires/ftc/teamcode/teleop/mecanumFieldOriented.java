@@ -222,9 +222,9 @@ public class mecanumFieldOriented extends LinearOpMode {
 
 
             //linear slide
-            if(gamepad2.dpad_left){
+            if(gamepad2.dpad_down){
                 slide.setPower(0.4);
-            }else if(gamepad2.dpad_right){
+            }else if(gamepad2.dpad_up){
                 slide.setPower(-0.4);
             }else{
                 slide.setPower(0);
