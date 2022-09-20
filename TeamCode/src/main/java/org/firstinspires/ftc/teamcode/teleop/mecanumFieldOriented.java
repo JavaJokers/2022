@@ -49,6 +49,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import java.lang.reflect.Parameter;
 import java.util.Locale;
 
+import javax.naming.directory.DirContext;
+
 
 @TeleOp(name = "mecanumFieldOriented", group = "Competition")
 //@Disabled
@@ -101,8 +103,8 @@ public class mecanumFieldOriented extends LinearOpMode {
         DcMotor rB = hardwareMap.dcMotor.get("back_right");
         DcMotor slide = hardwareMap.dcMotor.get("slide");
         CRServo intake = hardwareMap.crservo.get("intake");
-        Servo upDown0 = hardwareMap.servo.get("upDown0");
-        Servo upDown1 = hardwareMap.servo.get("upDown1");
+        DcMotor upDown0 = hardwareMap.dcMotor.get("upDown0");
+        DcMotor upDown1 = hardwareMap.dcMotor.get("upDown1");
         BNO055IMU imu = hardwareMap.get(BNO055IMU.class, "imu");
 
 
@@ -117,6 +119,8 @@ public class mecanumFieldOriented extends LinearOpMode {
         rB.setDirection(DcMotor.Direction.REVERSE);
         rd4b.setDirection(DcMotor.Direction.FORWARD);
         slide.setDirection(DcMotor.Direction.FORWARD);
+        upDown0.setDirection(DcMotor.Direction.FORWARD);
+        upDown1.setDirection(DcMotor.Direction.FORWARD);
 
         // Set zero power behavior
         lF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -125,6 +129,8 @@ public class mecanumFieldOriented extends LinearOpMode {
         rB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rd4b.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        upDown0.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        upDown1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
