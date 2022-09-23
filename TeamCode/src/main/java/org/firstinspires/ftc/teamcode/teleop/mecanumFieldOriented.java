@@ -109,6 +109,7 @@ public class mecanumFieldOriented extends LinearOpMode {
 
 
         initIMU(hardwareMap);
+
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
@@ -117,7 +118,6 @@ public class mecanumFieldOriented extends LinearOpMode {
         rF.setDirection(DcMotor.Direction.REVERSE);
         lB.setDirection(DcMotor.Direction.FORWARD);
         rB.setDirection(DcMotor.Direction.REVERSE);
-        rd4b.setDirection(DcMotor.Direction.FORWARD);
         slide.setDirection(DcMotor.Direction.FORWARD);
         upDown0.setDirection(DcMotor.Direction.FORWARD);
         upDown1.setDirection(DcMotor.Direction.FORWARD);
@@ -127,7 +127,6 @@ public class mecanumFieldOriented extends LinearOpMode {
         rF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rd4b.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         upDown0.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         upDown1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -149,8 +148,6 @@ public class mecanumFieldOriented extends LinearOpMode {
             double x = -gamepad1.left_stick_x;
             double y = -gamepad1.left_stick_y;
             double t = gamepad1.right_stick_x;
-
-            //get angle
 
 
             // rotation
@@ -199,11 +196,11 @@ public class mecanumFieldOriented extends LinearOpMode {
             }
 
             if((isDpadUp = gamepad1.dpad_up) && !wasDpadUp){
-                gridX ++;
+                gridY ++;
             }
 
             if((isDpadDown = gamepad1.dpad_down) && !wasDpadDown){
-                gridX --;
+                gridY --;
             }
 
 
@@ -229,6 +226,9 @@ public class mecanumFieldOriented extends LinearOpMode {
             }else{
                 slide.setPower(0);
             }
+
+
+            
 
             //intake
             if(gamepad1.right_trigger == 1 || gamepad2.right_trigger == 1){
