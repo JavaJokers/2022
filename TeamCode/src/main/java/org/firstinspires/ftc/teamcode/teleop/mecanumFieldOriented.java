@@ -49,7 +49,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import java.lang.reflect.Parameter;
 import java.util.Locale;
 
-import javax.naming.directory.DirContext;
+
 
 
 @TeleOp(name = "mecanumFieldOriented", group = "Competition")
@@ -183,7 +183,7 @@ public class mecanumFieldOriented extends LinearOpMode {
 
             //reinitialize field oriented
             if (gamepad1.a && gamepad1.x) {
-                imu.initialize(parameters1);
+                initIMU(hardwareMap);
             }
 
             //grid control
@@ -191,7 +191,7 @@ public class mecanumFieldOriented extends LinearOpMode {
                 gridX --;
             }
 
-            if((isDpadRight = gamepad1.dpad_Right) && !wasDpadRight){
+            if((isDpadRight = gamepad1.dpad_right) && !wasDpadRight){
                 gridX ++;
             }
 
