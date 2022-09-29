@@ -61,9 +61,10 @@ public class mecanumFieldOriented extends LinearOpMode {
     int ticks = 0;
     int upDownPos = 180;
 
-    int gridX = 0;
-    int gridY = 0;
-
+    int gridX = 1;
+    int gridY = 1;
+    String gridY_Converted = "A";
+    
     //dpad vars
     private boolean isDpadLeft = false;
     private boolean isDpadRight = false;
@@ -211,13 +212,26 @@ public class mecanumFieldOriented extends LinearOpMode {
                 gridX = 5;
             }
 
-            if(gridY < 0){
-                gridY = 0;
+            if(gridY < 1){
+                gridY = 1;
             }else if(gridY > 5){
                 gridY = 5;
             }
-
-
+            
+            switch(gridY){
+            case 1:  gridY_Converted = "E";
+                     break;
+            case 2:  gridY_Converted = "D";
+                     break;
+            case 3:  gridY_Converted = "C";
+                     break;
+            case 4:  gridY_Converted = "B";
+                     break;
+            case 5:  gridY_Converted = "A";
+                     break;
+            default: monthString = "Invalid lol";
+                     break;
+                    
             //linear slide
             if(gamepad2.dpad_down){
                 slide.setPower(0.4);
@@ -250,7 +264,7 @@ public class mecanumFieldOriented extends LinearOpMode {
             upDown1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             telemetry.addData("Grid X", gridX);
-            telemetry.addData("Grid Y", gridY);
+            telemetry.addData("Grid Y", gridY_Converted);
             telemetry.addData("Lift Position", ticks);
             telemetry.update();
 
