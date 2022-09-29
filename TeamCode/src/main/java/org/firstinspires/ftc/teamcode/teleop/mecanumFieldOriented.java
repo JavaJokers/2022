@@ -62,7 +62,7 @@ public class mecanumFieldOriented extends LinearOpMode {
 
     int gridX = 1;
     int gridY = 1;
-    String gridY_Converted = "E";
+    char gridX_Converted = "A";
     
     //dpad vars
     private boolean isDpadLeft = false;
@@ -187,19 +187,19 @@ public class mecanumFieldOriented extends LinearOpMode {
 
             //grid control
             if((isDpadLeft = gamepad1.dpad_left) && !wasDpadLeft){
-                gridX ++;
-            }
-
-            if((isDpadRight = gamepad1.dpad_right) && !wasDpadRight){
                 gridX --;
             }
 
+            if((isDpadRight = gamepad1.dpad_right) && !wasDpadRight){
+                gridX ++;
+            }
+
             if((isDpadUp = gamepad1.dpad_up) && !wasDpadUp){
-                gridY ++;
+                gridY --;
             }
 
             if((isDpadDown = gamepad1.dpad_down) && !wasDpadDown){
-                gridY --;
+                gridY ++;
             }
 
 
@@ -216,19 +216,19 @@ public class mecanumFieldOriented extends LinearOpMode {
                 gridY = 5;
             }
             
-            //gridY numbers --> letters
-            switch(gridY){
-            case 1:  gridY_Converted = "E";
+            //gridX numbers --> letters
+            switch(gridX){
+            case 1:  gridX_Converted = "A";
                      break;
-            case 2:  gridY_Converted = "D";
+            case 2:  gridX_Converted = "B";
                      break;
-            case 3:  gridY_Converted = "C";
+            case 3:  gridX_Converted = "C";
                      break;
-            case 4:  gridY_Converted = "B";
+            case 4:  gridX_Converted = "D";
                      break;
-            case 5:  gridY_Converted = "A";
+            case 5:  gridX_Converted = "E";
                      break;
-            default: monthString = "Invalid lol";
+            default: gridX_Converted = "0";
                      break;
             }
             //linear slide
@@ -260,8 +260,8 @@ public class mecanumFieldOriented extends LinearOpMode {
             dr4b.setTargetPosition(ticksLift);
             dr4b.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            telemetry.addData("Grid X", gridX);
-            telemetry.addData("Grid Y", gridY_Converted);
+            telemetry.addData("Grid X", gridX_Converted);
+            telemetry.addData("Grid Y", gridY);
             telemetry.addData("Lift Position", ticksLift);
             telemetry.update();
 
