@@ -61,8 +61,8 @@ public class mecanumFieldOriented extends LinearOpMode {
     int ticksLift = 0;
     int upDownPos = 180;
 
-    int gridX = 1;
-    int gridY = 1;
+    int gridX = 0;
+    int gridY = 0;
     String gridY_Converted = "A";
     
     //dpad vars
