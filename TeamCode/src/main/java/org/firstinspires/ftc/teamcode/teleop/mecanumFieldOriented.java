@@ -217,6 +217,7 @@ public class mecanumFieldOriented extends LinearOpMode {
                 gridY = 5;
             }
             
+            //gridY numbers --> letters
             switch(gridY){
             case 1:  gridY_Converted = "E";
                      break;
