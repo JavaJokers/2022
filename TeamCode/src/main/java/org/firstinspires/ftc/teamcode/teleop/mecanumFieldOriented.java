@@ -49,33 +49,31 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import java.lang.reflect.Parameter;
 import java.util.Locale;
 
-
-
-
 @TeleOp(name = "mecanumFieldOriented", group = "Competition")
-//@Disabled
+// @Disabled
 public class mecanumFieldOriented extends LinearOpMode {
 
     public static Orientation angles;
     public static Acceleration gravity;
     int ticksLift = 0;
+    int counter = 0;
 
     int gridX = 1;
     int gridY = 1;
     char gridX_Converted = "A";
-    
-    //dpad vars
+
+    // dpad vars
     private boolean isDpadLeft = false;
     private boolean isDpadRight = false;
     private boolean isDpadUp = false;
     private boolean isDpadDown = false;
+    private boolean isA = false;
 
     private boolean wasDpadLeft = false;
     private boolean wasDpadRight = false;
     private boolean wasDpadUp = false;
     private boolean wasDpadDown = false;
-
-    
+    private boolean wasA = false;
 
     BNO055IMU imu;
 
@@ -103,9 +101,9 @@ public class mecanumFieldOriented extends LinearOpMode {
         DcMotor rB = hardwareMap.dcMotor.get("back_right");
         DcMotor slide = hardwareMap.dcMotor.get("slide");
         CRServo intake = hardwareMap.crservo.get("intake");
+        Servo wire = hardwareMap.servo.get("wire");
         DcMotor dr4b = hardwareMap.dcMotor.get("dr4b");
         BNO055IMU imu = hardwareMap.get(BNO055IMU.class, "imu");
-
 
         initIMU(hardwareMap);
 
@@ -142,12 +140,10 @@ public class mecanumFieldOriented extends LinearOpMode {
             double backLeftPower;
             double backRightPower;
 
-
-            //set gamepad values
+            // set gamepad values
             double x = -gamepad1.left_stick_x;
             double y = -gamepad1.left_stick_y;
             double t = gamepad1.right_stick_x;
-
 
             // rotation
             double x_rotated = x * Math.cos(angles.firstAngle) - y * Math.sin(angles.firstAngle);
@@ -158,7 +154,6 @@ public class mecanumFieldOriented extends LinearOpMode {
             backLeftPower = x_rotated - y_rotated + t;
             frontRightPower = x_rotated - y_rotated - t;
             backRightPower = x_rotated + y_rotated - t;
-
 
             // Send calculated power to motors
             if (gamepad1.right_bumper) {
@@ -180,82 +175,93 @@ public class mecanumFieldOriented extends LinearOpMode {
                 rB.setPower(backRightPower);
             }
 
-            //reinitialize field oriented
+            // reinitialize field oriented
             if (gamepad1.a && gamepad1.x) {
                 initIMU(hardwareMap);
             }
 
-            //grid control
-            if((isDpadLeft = gamepad1.dpad_left) && !wasDpadLeft){
-                gridX --;
+            // grid control
+            if ((isDpadLeft = gamepad1.dpad_left) && !wasDpadLeft) {
+                gridX--;
             }
 
-            if((isDpadRight = gamepad1.dpad_right) && !wasDpadRight){
-                gridX ++;
+            if ((isDpadRight = gamepad1.dpad_right) && !wasDpadRight) {
+                gridX++;
             }
 
-            if((isDpadUp = gamepad1.dpad_up) && !wasDpadUp){
-                gridY --;
+            if ((isDpadUp = gamepad1.dpad_up) && !wasDpadUp) {
+                gridY--;
             }
 
-            if((isDpadDown = gamepad1.dpad_down) && !wasDpadDown){
-                gridY ++;
+            if ((isDpadDown = gamepad1.dpad_down) && !wasDpadDown) {
+                gridY++;
             }
 
-
-            //limit grid values
-            if(gridX < 1){
+            // limit grid values
+            if (gridX < 1) {
                 gridX = 1;
-            } else if(gridX > 5){
+            } else if (gridX > 5) {
                 gridX = 5;
             }
 
-            if(gridY < 1){
+            if (gridY < 1) {
                 gridY = 1;
-            }else if(gridY > 5){
+            } else if (gridY > 5) {
                 gridY = 5;
             }
-            
-            //gridX numbers --> letters
-            switch(gridX){
-            case 1:  gridX_Converted = "A";
-                     break;
-            case 2:  gridX_Converted = "B";
-                     break;
-            case 3:  gridX_Converted = "C";
-                     break;
-            case 4:  gridX_Converted = "D";
-                     break;
-            case 5:  gridX_Converted = "E";
-                     break;
-            default: gridX_Converted = "0";
-                     break;
+
+            // gridX numbers --> letters
+            switch (gridX) {
+                case 1:
+                    gridX_Converted = "A";
+                    break;
+                case 2:
+                    gridX_Converted = "B";
+                    break;
+                case 3:
+                    gridX_Converted = "C";
+                    break;
+                case 4:
+                    gridX_Converted = "D";
+                    break;
+                case 5:
+                    gridX_Converted = "E";
+                    break;
+                default:
+                    gridX_Converted = "0";
+                    break;
             }
-            //linear slide
-            if(gamepad2.dpad_down){
+            // linear slide
+            if (gamepad2.dpad_down) {
                 slide.setPower(0.4);
-            }else if(gamepad2.dpad_up){
+            } else if (gamepad2.dpad_up) {
                 slide.setPower(-0.4);
-            }else{
+            } else {
                 slide.setPower(0);
             }
 
+            if ((isA = gamepad2.a) && !A) {
+                counter++;
+            }
 
-            
+            if (counter % 2 == 0) {
+                wire.setPosition(90);
+            } else if (counter % 2 == 1) {
+                wire.setPosition(180);
+            } else {
+                telemetry.addData("ruh roh");
+            }
 
-            //intake
-            if(gamepad1.right_trigger == 1 || gamepad2.right_trigger == 1){
+            // intake
+            if (gamepad1.right_trigger == 1 || gamepad2.right_trigger == 1) {
                 intake.setPower(0.6);
-            }else if(gamepad1.left_trigger == 1 || gamepad2.left_trigger == 1){
+            } else if (gamepad1.left_trigger == 1 || gamepad2.left_trigger == 1) {
                 intake.setPower(-0.6);
-            }else{
+            } else {
                 intake.setPower(0);
             }
 
-
-
-
-            //lift control
+            // lift control
             ticksLift = ticksLift - (-(int) gamepad2.left_stick_y * 2);
             dr4b.setTargetPosition(ticksLift);
             dr4b.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -269,8 +275,9 @@ public class mecanumFieldOriented extends LinearOpMode {
             wasDpadRight = isDpadRight;
             wasDpadUp = isDpadUp;
             wasDpadDown = isDpadDown;
+            wasA = isA;
         }
-        
+
     }
 
     static String formatAngle(AngleUnit angleUnit, double angle) {
@@ -280,4 +287,4 @@ public class mecanumFieldOriented extends LinearOpMode {
     static String formatDegrees(double degrees) {
         return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
     }
-} 
+}
