@@ -62,6 +62,7 @@ public class mecanumFieldOriented extends LinearOpMode {
     int gridY = 1;
     char gridX_Converted = "A";
 
+    
     // dpad vars
     private boolean isDpadLeft = false;
     private boolean isDpadRight = false;
@@ -94,6 +95,7 @@ public class mecanumFieldOriented extends LinearOpMode {
     @Override
     public void runOpMode() {
 
+        
         // Declare OpMode members.
         DcMotor lF = hardwareMap.dcMotor.get("front_left");
         DcMotor lB = hardwareMap.dcMotor.get("back_left");
@@ -110,6 +112,7 @@ public class mecanumFieldOriented extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
+        
         // Set motor directions
         lF.setDirection(DcMotor.Direction.FORWARD);
         rF.setDirection(DcMotor.Direction.REVERSE);
@@ -119,6 +122,7 @@ public class mecanumFieldOriented extends LinearOpMode {
         upDown0.setDirection(DcMotor.Direction.FORWARD);
         upDown1.setDirection(DcMotor.Direction.FORWARD);
 
+        
         // Set zero power behavior
         lF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -128,33 +132,40 @@ public class mecanumFieldOriented extends LinearOpMode {
         upDown0.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         upDown1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
+        
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
+            
             // Setup a variable for each drive wheel to save power level for telemetry
             double frontLeftPower;
             double frontRightPower;
             double backLeftPower;
             double backRightPower;
 
+            
             // set gamepad values
             double x = -gamepad1.left_stick_x;
             double y = -gamepad1.left_stick_y;
             double t = gamepad1.right_stick_x;
 
+            
             // rotation
             double x_rotated = x * Math.cos(angles.firstAngle) - y * Math.sin(angles.firstAngle);
             double y_rotated = x * Math.sin(angles.firstAngle) + y * Math.cos(angles.firstAngle);
 
+            
             // x, y, theta input mixing
             frontLeftPower = x_rotated + y_rotated + t;
             backLeftPower = x_rotated - y_rotated + t;
             frontRightPower = x_rotated - y_rotated - t;
             backRightPower = x_rotated + y_rotated - t;
 
+            
             // Send calculated power to motors
             if (gamepad1.right_bumper) {
                 lF.setPower(frontLeftPower * 0.75);
@@ -175,11 +186,13 @@ public class mecanumFieldOriented extends LinearOpMode {
                 rB.setPower(backRightPower);
             }
 
+            
             // reinitialize field oriented
             if (gamepad1.a && gamepad1.x) {
                 initIMU(hardwareMap);
             }
 
+            
             // grid control
             if ((isDpadLeft = gamepad1.dpad_left) && !wasDpadLeft) {
                 gridX--;
@@ -197,6 +210,7 @@ public class mecanumFieldOriented extends LinearOpMode {
                 gridY++;
             }
 
+            
             // limit grid values
             if (gridX < 1) {
                 gridX = 1;
@@ -210,6 +224,7 @@ public class mecanumFieldOriented extends LinearOpMode {
                 gridY = 5;
             }
 
+            
             // gridX numbers --> letters
             switch (gridX) {
                 case 1:
@@ -231,6 +246,8 @@ public class mecanumFieldOriented extends LinearOpMode {
                     gridX_Converted = "0";
                     break;
             }
+            
+            
             // linear slide
             if (gamepad2.dpad_down) {
                 slide.setPower(0.4);
@@ -252,6 +269,7 @@ public class mecanumFieldOriented extends LinearOpMode {
                 telemetry.addData("ruh roh");
             }
 
+            
             // intake
             if (gamepad1.right_trigger == 1 || gamepad2.right_trigger == 1) {
                 intake.setPower(0.6);
@@ -261,6 +279,7 @@ public class mecanumFieldOriented extends LinearOpMode {
                 intake.setPower(0);
             }
 
+            
             // lift control
             ticksLift = ticksLift - (-(int) gamepad2.left_stick_y * 2);
             dr4b.setTargetPosition(ticksLift);
