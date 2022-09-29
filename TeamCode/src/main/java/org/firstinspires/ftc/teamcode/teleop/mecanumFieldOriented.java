@@ -219,6 +219,8 @@ public class mecanumFieldOriented extends LinearOpMode {
             
             //gridY numbers --> letters
             switch(gridY){
+            case 0: gridY_Converted = "F";
+                     break;
             case 1:  gridY_Converted = "E";
                      break;
             case 2:  gridY_Converted = "D";
@@ -231,7 +233,7 @@ public class mecanumFieldOriented extends LinearOpMode {
                      break;
             default: monthString = "Invalid lol";
                      break;
-                    
+            }
             //linear slide
             if(gamepad2.dpad_down){
                 slide.setPower(0.4);
@@ -259,6 +261,7 @@ public class mecanumFieldOriented extends LinearOpMode {
             //lift control
             ticksLift = ticksLift - (-(int) gamepad2.left_stick_y * 2);
             dr4b.setTargetPosition(ticksLift);
+            dr4b.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             telemetry.addData("Grid X", gridX);
             telemetry.addData("Grid Y", gridY_Converted);
@@ -270,6 +273,7 @@ public class mecanumFieldOriented extends LinearOpMode {
             wasDpadUp = isDpadUp;
             wasDpadDown = isDpadDown;
         }
+        
     }
 
     static String formatAngle(AngleUnit angleUnit, double angle) {
