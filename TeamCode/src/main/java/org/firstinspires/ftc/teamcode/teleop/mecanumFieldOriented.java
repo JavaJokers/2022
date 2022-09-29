@@ -61,9 +61,9 @@ public class mecanumFieldOriented extends LinearOpMode {
     int ticksLift = 0;
     int upDownPos = 180;
 
-    int gridX = 0;
-    int gridY = 0;
-    String gridY_Converted = "A";
+    int gridX = 1;
+    int gridY = 1;
+    String gridY_Converted = "E";
     
     //dpad vars
     private boolean isDpadLeft = false;
@@ -205,22 +205,20 @@ public class mecanumFieldOriented extends LinearOpMode {
 
 
             //limit grid values
-            if(gridX < 0){
-                gridX = 0;
+            if(gridX < 1){
+                gridX = 1;
             } else if(gridX > 5){
                 gridX = 5;
             }
 
-            if(gridY < 0){
-                gridY = 0;
+            if(gridY < 1){
+                gridY = 1;
             }else if(gridY > 5){
                 gridY = 5;
             }
             
             //gridY numbers --> letters
             switch(gridY){
-            case 0: gridY_Converted = "F";
-                     break;
             case 1:  gridY_Converted = "E";
                      break;
             case 2:  gridY_Converted = "D";
