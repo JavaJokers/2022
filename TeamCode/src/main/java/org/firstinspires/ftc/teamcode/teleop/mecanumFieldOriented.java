@@ -205,14 +205,14 @@ public class mecanumFieldOriented extends LinearOpMode {
 
 
             //limit grid values
-            if(gridX < 1){
-                gridX = 1;
+            if(gridX < 0){
+                gridX = 0;
             } else if(gridX > 5){
                 gridX = 5;
             }
 
-            if(gridY < 1){
-                gridY = 1;
+            if(gridY < 0){
+                gridY = 0;
             }else if(gridY > 5){
                 gridY = 5;
             }
