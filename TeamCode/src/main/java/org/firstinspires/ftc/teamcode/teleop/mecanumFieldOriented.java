@@ -59,7 +59,6 @@ public class mecanumFieldOriented extends LinearOpMode {
     public static Orientation angles;
     public static Acceleration gravity;
     int ticksLift = 0;
-    int upDownPos = 180;
 
     int gridX = 1;
     int gridY = 1;
@@ -188,11 +187,11 @@ public class mecanumFieldOriented extends LinearOpMode {
 
             //grid control
             if((isDpadLeft = gamepad1.dpad_left) && !wasDpadLeft){
-                gridX --;
+                gridX ++;
             }
 
             if((isDpadRight = gamepad1.dpad_right) && !wasDpadRight){
-                gridX ++;
+                gridX --;
             }
 
             if((isDpadUp = gamepad1.dpad_up) && !wasDpadUp){
