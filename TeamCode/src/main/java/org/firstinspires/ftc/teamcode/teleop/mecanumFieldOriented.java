@@ -58,7 +58,7 @@ public class mecanumFieldOriented extends LinearOpMode {
 
     public static Orientation angles;
     public static Acceleration gravity;
-    int ticks = 0;
+    int ticksLift = 0;
     int upDownPos = 180;
 
     int gridX = 1;
@@ -104,8 +104,7 @@ public class mecanumFieldOriented extends LinearOpMode {
         DcMotor rB = hardwareMap.dcMotor.get("back_right");
         DcMotor slide = hardwareMap.dcMotor.get("slide");
         CRServo intake = hardwareMap.crservo.get("intake");
-        DcMotor upDown0 = hardwareMap.dcMotor.get("upDown0");
-        DcMotor upDown1 = hardwareMap.dcMotor.get("upDown1");
+        DcMotor dr4b = hardwareMap.dcMotor.get("dr4b");
         BNO055IMU imu = hardwareMap.get(BNO055IMU.class, "imu");
 
 
@@ -206,8 +205,8 @@ public class mecanumFieldOriented extends LinearOpMode {
 
 
             //limit grid values
-            if(gridX < 0){
-                gridX = 0;
+            if(gridX < 1){
+                gridX = 1;
             } else if(gridX > 5){
                 gridX = 5;
             }
@@ -257,15 +256,12 @@ public class mecanumFieldOriented extends LinearOpMode {
 
 
             //lift control
-            ticks = ticks - (-(int) gamepad2.left_stick_y * 2);
-            upDown0.setTargetPosition(ticks);
-            upDown1.setTargetPosition(ticks);
-            upDown0.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            upDown1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            ticksLift = ticksLift - (-(int) gamepad2.left_stick_y * 2);
+            dr4b.setTargetPosition(ticksLift);
 
             telemetry.addData("Grid X", gridX);
             telemetry.addData("Grid Y", gridY_Converted);
-            telemetry.addData("Lift Position", ticks);
+            telemetry.addData("Lift Position", ticksLift);
             telemetry.update();
 
             wasDpadLeft = isDpadLeft;
