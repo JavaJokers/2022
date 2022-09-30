@@ -60,7 +60,7 @@ public class mecanumFieldOriented extends LinearOpMode {
 
     int gridX = 1;
     int gridY = 1;
-    char gridX_Converted = "A";
+    String gridX_Converted = "A";
 
     // dpad vars
     private boolean isDpadLeft = false;
@@ -102,7 +102,7 @@ public class mecanumFieldOriented extends LinearOpMode {
         DcMotor slide = hardwareMap.dcMotor.get("slide");
         CRServo intake = hardwareMap.crservo.get("intake");
         Servo wire = hardwareMap.servo.get("wire");
-        DcMotor dr4b = hardwareMap.dcMotor.get("dr4b");
+        DcMotor rd4b = hardwareMap.dcMotor.get("dr4b");
         BNO055IMU imu = hardwareMap.get(BNO055IMU.class, "imu");
 
         initIMU(hardwareMap);
@@ -116,17 +116,14 @@ public class mecanumFieldOriented extends LinearOpMode {
         lB.setDirection(DcMotor.Direction.FORWARD);
         rB.setDirection(DcMotor.Direction.REVERSE);
         slide.setDirection(DcMotor.Direction.FORWARD);
-        upDown0.setDirection(DcMotor.Direction.FORWARD);
-        upDown1.setDirection(DcMotor.Direction.FORWARD);
-
+        rd4b.setDirection(DcMotor.Direction.FORWARD);
         // Set zero power behavior
         lF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        upDown0.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        upDown1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rd4b.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -240,7 +237,7 @@ public class mecanumFieldOriented extends LinearOpMode {
                 slide.setPower(0);
             }
 
-            if ((isA = gamepad2.a) && !A) {
+            if ((isA = gamepad2.a) && !wasA) {
                 counter++;
             }
 
@@ -249,7 +246,8 @@ public class mecanumFieldOriented extends LinearOpMode {
             } else if (counter % 2 == 1) {
                 wire.setPosition(180);
             } else {
-                telemetry.addData("ruh roh");
+                telemetry.addData("ruh roh", null);
+                telemetry.update();
             }
 
             // intake
