@@ -102,7 +102,7 @@ public class mecanumFieldOriented extends LinearOpMode {
         DcMotor slide = hardwareMap.dcMotor.get("slide");
         CRServo intake = hardwareMap.crservo.get("intake");
         Servo wire = hardwareMap.servo.get("wire");
-        DcMotor rd4b = hardwareMap.dcMotor.get("dr4b");
+        DcMotor dr4b = hardwareMap.dcMotor.get("dr4b");
         BNO055IMU imu = hardwareMap.get(BNO055IMU.class, "imu");
 
         initIMU(hardwareMap);
@@ -116,14 +116,14 @@ public class mecanumFieldOriented extends LinearOpMode {
         lB.setDirection(DcMotor.Direction.FORWARD);
         rB.setDirection(DcMotor.Direction.REVERSE);
         slide.setDirection(DcMotor.Direction.FORWARD);
-        rd4b.setDirection(DcMotor.Direction.FORWARD);
+        dr4b.setDirection(DcMotor.Direction.FORWARD);
         // Set zero power behavior
         lF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rd4b.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        dr4b.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
