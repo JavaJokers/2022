@@ -56,6 +56,7 @@ public class mecanumFieldOriented extends LinearOpMode {
     public static Orientation angles;
     public static Acceleration gravity;
     int ticksLift = 0;
+    int ticksSlide = 0;
     int counter = 0;
 
     int gridX = 1;
@@ -229,13 +230,9 @@ public class mecanumFieldOriented extends LinearOpMode {
                     break;
             }
             // linear slide
-            if (gamepad2.dpad_down) {
-                slide.setPower(0.4);
-            } else if (gamepad2.dpad_up) {
-                slide.setPower(-0.4);
-            } else {
-                slide.setPower(0);
-            }
+            ticksSlide = ticksSlide - gamepad2.dpad_down + gamepad2.dpad_up;
+            slide.setTargetPosition(ticksSlide);
+            slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             if ((isA = gamepad2.a) && !wasA) {
                 counter++;
@@ -267,6 +264,7 @@ public class mecanumFieldOriented extends LinearOpMode {
             telemetry.addData("Grid X", gridX_Converted);
             telemetry.addData("Grid Y", gridY);
             telemetry.addData("Lift Position", ticksLift);
+            telemetry.addData("Slide Position", ticksSlide);
             telemetry.update();
 
             wasDpadLeft = isDpadLeft;
