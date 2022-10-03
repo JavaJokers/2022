@@ -57,7 +57,7 @@ public class mecanumFieldOriented extends LinearOpMode {
     public static Acceleration gravity;
     int ticksLift = 0;
     int ticksSlide = 0;
-    int wire = 0;
+    int wireCounter = 0;
 
     int gridX = 1;
     int gridY = 1;
@@ -235,7 +235,7 @@ public class mecanumFieldOriented extends LinearOpMode {
             slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             if ((isA = gamepad2.a) && !wasA) {
-                counter++;
+                wireCounter++;
             }
 
             if (counter % 2 == 0) {
