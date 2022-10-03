@@ -57,7 +57,7 @@ public class mecanumFieldOriented extends LinearOpMode {
     public static Acceleration gravity;
     int ticksLift = 0;
     int ticksSlide = 0;
-    int counter = 0;
+    int wire = 0;
 
     int gridX = 1;
     int gridY = 1;
