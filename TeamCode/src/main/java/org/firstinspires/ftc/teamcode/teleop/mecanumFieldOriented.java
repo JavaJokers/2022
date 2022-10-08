@@ -230,7 +230,7 @@ public class mecanumFieldOriented extends LinearOpMode {
                     break;
             }
             // linear slide
-            ticksSlide = ticksSlide - gamepad2.dpad_down + gamepad2.dpad_up;
+            ticksSlide = ticksSlide - (int)gamepad2.dpad_down + gamepad2.dpad_up;
             slide.setTargetPosition(ticksSlide);
             slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -238,9 +238,9 @@ public class mecanumFieldOriented extends LinearOpMode {
                 wireCounter++;
             }
 
-            if (counter % 2 == 0) {
+            if (wireCounter % 2 == 0) {
                 wire.setPosition(90);
-            } else if (counter % 2 == 1) {
+            } else if (wireCounter % 2 == 1) {
                 wire.setPosition(180);
             } else {
                 telemetry.addData("ruh roh", null);
