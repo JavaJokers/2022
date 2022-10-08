@@ -100,6 +100,7 @@ public class mecanumFieldOriented extends LinearOpMode {
         DcMotor lB = hardwareMap.dcMotor.get("back_left");
         DcMotor rF = hardwareMap.dcMotor.get("front_right");
         DcMotor rB = hardwareMap.dcMotor.get("back_right");
+        DcMotor rotate = hardwareMap.dcMotor.get("rotate");
         DcMotor slide = hardwareMap.dcMotor.get("slide");
         CRServo intake = hardwareMap.crservo.get("intake");
         Servo wire = hardwareMap.servo.get("wire");
@@ -117,7 +118,8 @@ public class mecanumFieldOriented extends LinearOpMode {
         rF.setDirection(DcMotor.Direction.REVERSE);
         lB.setDirection(DcMotor.Direction.FORWARD);
         rB.setDirection(DcMotor.Direction.REVERSE);
-        slide.setDirection(DcMotor.Direction.FORWARD);
+        rotate.setDirection(DcMotor.Direction.FORWARD); //TODO I hope this is right
+        slide.setDirection(DcMotor.Direction.FORWARD);  //TODO I hope this is right too
         upDown0.setDirection(DcMotor.Direction.FORWARD);
         upDown1.setDirection(DcMotor.Direction.FORWARD); //TODO one of these should be reversed at some point
 
@@ -126,6 +128,7 @@ public class mecanumFieldOriented extends LinearOpMode {
         rF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rotate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         upDown0.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         upDown1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -234,9 +237,11 @@ public class mecanumFieldOriented extends LinearOpMode {
                     break;
             }
             // linear slide
-           //TODO ticksSlide = ticksSlide -  gamepad2.dpad_down + gamepad2.dpad_up;
-            slide.setTargetPosition(ticksSlide);
-            slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            //TODO ticksSlide = ticksSlide -  gamepad2.dpad_down + gamepad2.dpad_up;
+            //TODO slide.setTargetPosition(ticksSlide);
+            //TODO slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
 
             if ((isA = gamepad2.a) && !wasA) {
                 wireCounter++;
