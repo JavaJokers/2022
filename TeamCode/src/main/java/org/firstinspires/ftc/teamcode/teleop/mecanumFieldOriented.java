@@ -76,21 +76,10 @@ public class mecanumFieldOriented extends LinearOpMode {
     private boolean wasDpadDown = false;
     private boolean wasA = false;
 
-    BNO055IMU imu;
+    BNO055IMU imu = hardwareMap.get(BNO055IMU.class, "imu");
+    BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
-    public void initIMU(HardwareMap hwm) {
-        imu = hwm.get(BNO055IMU.class, "imu");
-        BNO055IMU.Parameters parameters1 = new BNO055IMU.Parameters();
-        parameters1.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters1.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters1.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters1.loggingEnabled = true;
-        parameters1.loggingTag = "IMU";
-        parameters1.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-        imu.initialize(parameters1);
-
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-    }
+   
 
     @Override
     public void runOpMode() {
@@ -106,9 +95,8 @@ public class mecanumFieldOriented extends LinearOpMode {
         Servo wire = hardwareMap.servo.get("wire");
         DcMotor upDown0 = hardwareMap.dcMotor.get("upDown0");
         DcMotor upDown1 = hardwareMap.dcMotor.get("upDown1");
-        BNO055IMU imu = hardwareMap.get(BNO055IMU.class, "imu");
 
-        initIMU(hardwareMap);
+        imu.initialize(parameters);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -183,7 +171,7 @@ public class mecanumFieldOriented extends LinearOpMode {
 
             // reinitialize field oriented
             if (gamepad1.a && gamepad1.x) {
-                initIMU(hardwareMap);
+                imu.initialize(parameters);
             }
 
             // grid control
@@ -288,11 +276,4 @@ public class mecanumFieldOriented extends LinearOpMode {
 
     }
 
-    static String formatAngle(AngleUnit angleUnit, double angle) {
-        return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
-    }
-
-    static String formatDegrees(double degrees) {
-        return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
-    }
 }
