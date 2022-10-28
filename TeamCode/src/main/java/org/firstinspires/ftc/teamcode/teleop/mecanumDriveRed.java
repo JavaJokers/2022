@@ -47,6 +47,7 @@ public class mecanumDriveRed extends LinearOpMode {
         while (opModeIsActive()) {
 
 
+            // hello there
             double rx = -gamepad1.right_stick_x; // Remember, this is reversed!
             double x = -gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
             double y = gamepad1.left_stick_y;
