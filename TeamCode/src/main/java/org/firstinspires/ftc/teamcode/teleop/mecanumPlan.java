@@ -49,9 +49,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import java.lang.reflect.Parameter;
 import java.util.Locale;
 
-@TeleOp(name = "mecanumFieldOriented", group = "Competition")
+@TeleOp(name = "mecanumPlan", group = "Competition")
 // @Disabled
-public class mecanumFieldOriented extends LinearOpMode {
+public class mecanumPlan extends LinearOpMode {
 
     public static Orientation angles;
     public static Acceleration gravity;
