@@ -1,14 +1,19 @@
 Gamepad 1:
 
-left_stick: x and y movement of robot right_stick_x: rotation of robot X: Carousel Wheel LB: Set
-movement speed to 75% RB: Set movement speed to 25%
+Left_stick: x and y movement of robot
 
-Gamepad 2:
+D_Pad: Select junction grid
 
-left_stick_y: Arm
+A: Confirm junction (go there, deliver cone, go back)
 
-LB: Set arm power to 75% RB: Set arm power to 25%
+B: Cancel junction (stop)
 
-A: Grabber Open B: Grabber Ball Y: Grabber Box X: Carousel Wheel
+X/Y: Reset angle orientation
 
-Dpad Up: TODO Dpad Right: TODO Dpad Down: TODO Dpad Left: TODO
+Right Trigger: Close claw
+
+Left Trigger: Open claw
+
+Right Bumper: Normal-Level Claw
+
+Left Bumper: Fix-Cone-Orientation-Level Claw
