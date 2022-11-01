@@ -1,11 +1,11 @@
 # Control Hub
 
-Motor 0: front_left Motor 1: front_right Motor 2: back_left Motor 3: back_right
+Motor 0: bL, Motor 1: fL, Motor 2: fR, Motor 3: bR
 
 USB 2.0: Webcam
 
-Servo 0: grabber Servo 1: wrist
+Servo 0: clawRight, Servo 1: clawLeft
 
 # Expansion Hub
 
-Motor 0: arm1 Motor 1: duckies
+Motor 0: slidesRight, Motor 1: slidesLeft

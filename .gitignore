@@ -94,3 +94,7 @@ lint/tmp/
 
 #This is something
 .hprof
+
+
+#VS CODE
+.vscode

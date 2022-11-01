@@ -49,50 +49,37 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import java.lang.reflect.Parameter;
 import java.util.Locale;
 
-
-
-
-@TeleOp(name = "mecanumFieldOriented", group = "Competition")
-//@Disabled
-public class mecanumFieldOriented extends LinearOpMode {
+@TeleOp(name = "mecanumPlan", group = "Competition")
+// @Disabled
+public class mecanumPlan extends LinearOpMode {
 
     public static Orientation angles;
     public static Acceleration gravity;
     int ticksLift = 0;
-    int upDownPos = 180;
+    int ticksSlide = 0;
+    int wireCounter = 0;
 
     int gridX = 1;
     int gridY = 1;
-    String gridY_Converted = "E";
-    
-    //dpad vars
+    String gridX_Converted = "A";
+
+    // dpad vars
     private boolean isDpadLeft = false;
     private boolean isDpadRight = false;
     private boolean isDpadUp = false;
     private boolean isDpadDown = false;
+    private boolean isA = false;
 
     private boolean wasDpadLeft = false;
     private boolean wasDpadRight = false;
     private boolean wasDpadUp = false;
     private boolean wasDpadDown = false;
+    private boolean wasA = false;
 
-    
+    BNO055IMU imu = hardwareMap.get(BNO055IMU.class, "imu");
+    BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
-    BNO055IMU imu;
-
-    public void initIMU(HardwareMap hwm) {
-        imu = hwm.get(BNO055IMU.class, "imu");
-        BNO055IMU.Parameters parameters1 = new BNO055IMU.Parameters();
-        parameters1.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters1.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters1.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters1.loggingEnabled = true;
-        parameters1.loggingTag = "IMU";
-        parameters1.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-        imu.initialize(parameters1);
-
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-    }
+   
 
     @Override
     public void runOpMode() {
@@ -102,13 +89,14 @@ public class mecanumFieldOriented extends LinearOpMode {
         DcMotor lB = hardwareMap.dcMotor.get("back_left");
         DcMotor rF = hardwareMap.dcMotor.get("front_right");
         DcMotor rB = hardwareMap.dcMotor.get("back_right");
+        DcMotor rotate = hardwareMap.dcMotor.get("rotate");
         DcMotor slide = hardwareMap.dcMotor.get("slide");
         CRServo intake = hardwareMap.crservo.get("intake");
-        DcMotor dr4b = hardwareMap.dcMotor.get("dr4b");
-        BNO055IMU imu = hardwareMap.get(BNO055IMU.class, "imu");
+        Servo wire = hardwareMap.servo.get("wire");
+        DcMotor upDown0 = hardwareMap.dcMotor.get("upDown0");
+        DcMotor upDown1 = hardwareMap.dcMotor.get("upDown1");
 
-
-        initIMU(hardwareMap);
+        imu.initialize(parameters);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -118,15 +106,17 @@ public class mecanumFieldOriented extends LinearOpMode {
         rF.setDirection(DcMotor.Direction.REVERSE);
         lB.setDirection(DcMotor.Direction.FORWARD);
         rB.setDirection(DcMotor.Direction.REVERSE);
-        slide.setDirection(DcMotor.Direction.FORWARD);
+        rotate.setDirection(DcMotor.Direction.FORWARD); //TODO I hope this is right
+        slide.setDirection(DcMotor.Direction.FORWARD);  //TODO I hope this is right too
         upDown0.setDirection(DcMotor.Direction.FORWARD);
-        upDown1.setDirection(DcMotor.Direction.FORWARD);
+        upDown1.setDirection(DcMotor.Direction.FORWARD); //TODO one of these should be reversed at some point
 
         // Set zero power behavior
         lF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rotate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         upDown0.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         upDown1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -143,23 +133,21 @@ public class mecanumFieldOriented extends LinearOpMode {
             double backLeftPower;
             double backRightPower;
 
-
-            //set gamepad values
-            double x = -gamepad1.left_stick_x;
+            // set gamepad values
+            double x = gamepad1.left_stick_x * 1.1;
             double y = -gamepad1.left_stick_y;
             double t = gamepad1.right_stick_x;
-
 
             // rotation
             double x_rotated = x * Math.cos(angles.firstAngle) - y * Math.sin(angles.firstAngle);
             double y_rotated = x * Math.sin(angles.firstAngle) + y * Math.cos(angles.firstAngle);
 
             // x, y, theta input mixing
-            frontLeftPower = x_rotated + y_rotated + t;
-            backLeftPower = x_rotated - y_rotated + t;
-            frontRightPower = x_rotated - y_rotated - t;
-            backRightPower = x_rotated + y_rotated - t;
-
+            double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(t), 1);
+            frontLeftPower = (y + x + t) / denominator;
+            backLeftPower = (y - x + t) / denominator;
+            frontRightPower = (y - x - t) / denominator;
+            backRightPower = (y + x - t) / denominator;
 
             // Send calculated power to motors
             if (gamepad1.right_bumper) {
@@ -181,104 +169,111 @@ public class mecanumFieldOriented extends LinearOpMode {
                 rB.setPower(backRightPower);
             }
 
-            //reinitialize field oriented
+            // reinitialize field oriented
             if (gamepad1.a && gamepad1.x) {
-                initIMU(hardwareMap);
+                imu.initialize(parameters);
             }
 
-            //grid control
-            if((isDpadLeft = gamepad1.dpad_left) && !wasDpadLeft){
-                gridX --;
+            // grid control
+            if ((isDpadLeft = gamepad1.dpad_left) && !wasDpadLeft) {
+                gridX--;
             }
 
-            if((isDpadRight = gamepad1.dpad_right) && !wasDpadRight){
-                gridX ++;
+            if ((isDpadRight = gamepad1.dpad_right) && !wasDpadRight) {
+                gridX++;
             }
 
-            if((isDpadUp = gamepad1.dpad_up) && !wasDpadUp){
-                gridY ++;
+            if ((isDpadUp = gamepad1.dpad_up) && !wasDpadUp) {
+                gridY--;
             }
 
-            if((isDpadDown = gamepad1.dpad_down) && !wasDpadDown){
-                gridY --;
+            if ((isDpadDown = gamepad1.dpad_down) && !wasDpadDown) {
+                gridY++;
             }
 
-
-            //limit grid values
-            if(gridX < 1){
+            // limit grid values
+            if (gridX < 1) {
                 gridX = 1;
-            } else if(gridX > 5){
+            } else if (gridX > 5) {
                 gridX = 5;
             }
 
-            if(gridY < 1){
+            if (gridY < 1) {
                 gridY = 1;
-            }else if(gridY > 5){
+            } else if (gridY > 5) {
                 gridY = 5;
             }
-            
-            //gridY numbers --> letters
-            switch(gridY){
-            case 1:  gridY_Converted = "E";
-                     break;
-            case 2:  gridY_Converted = "D";
-                     break;
-            case 3:  gridY_Converted = "C";
-                     break;
-            case 4:  gridY_Converted = "B";
-                     break;
-            case 5:  gridY_Converted = "A";
-                     break;
-            default: monthString = "Invalid lol";
-                     break;
+
+            // gridX numbers --> letters
+            switch (gridX) {
+                case 1:
+                    gridX_Converted = "A";
+                    break;
+                case 2:
+                    gridX_Converted = "B";
+                    break;
+                case 3:
+                    gridX_Converted = "C";
+                    break;
+                case 4:
+                    gridX_Converted = "D";
+                    break;
+                case 5:
+                    gridX_Converted = "E";
+                    break;
+                default:
+                    gridX_Converted = "0";
+                    break;
             }
-            //linear slide
-            if(gamepad2.dpad_down){
-                slide.setPower(0.4);
-            }else if(gamepad2.dpad_up){
-                slide.setPower(-0.4);
-            }else{
-                slide.setPower(0);
+            // linear slide
+            //TODO ticksSlide = ticksSlide -  gamepad2.dpad_down + gamepad2.dpad_up;
+            //TODO slide.setTargetPosition(ticksSlide);
+            //TODO slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+
+            if ((isA = gamepad2.a) && !wasA) {
+                wireCounter++;
             }
 
+            if (wireCounter % 2 == 0) {
+                wire.setPosition(90);
+            } else if (wireCounter % 2 == 1) {
+                wire.setPosition(180);
+            } else {
+                telemetry.addData("ruh roh", null);
+                telemetry.update();
+            }
 
-            
-
-            //intake
-            if(gamepad1.right_trigger == 1 || gamepad2.right_trigger == 1){
+            // intake
+            if (gamepad1.right_trigger == 1 || gamepad2.right_trigger == 1) {
                 intake.setPower(0.6);
-            }else if(gamepad1.left_trigger == 1 || gamepad2.left_trigger == 1){
+            } else if (gamepad1.left_trigger == 1 || gamepad2.left_trigger == 1) {
                 intake.setPower(-0.6);
-            }else{
+            } else {
                 intake.setPower(0);
             }
 
-
-
-
-            //lift control
+            // lift control
             ticksLift = ticksLift - (-(int) gamepad2.left_stick_y * 2);
-            dr4b.setTargetPosition(ticksLift);
-            dr4b.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            upDown0.setTargetPosition(ticksLift);
+            upDown1.setTargetPosition(ticksLift);
+            upDown0.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            upDown1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            telemetry.addData("Grid X", gridX);
-            telemetry.addData("Grid Y", gridY_Converted);
+            telemetry.addData("Grid X", gridX_Converted);
+            telemetry.addData("Grid Y", gridY);
             telemetry.addData("Lift Position", ticksLift);
+            telemetry.addData("Slide Position", ticksSlide);
             telemetry.update();
 
             wasDpadLeft = isDpadLeft;
             wasDpadRight = isDpadRight;
             wasDpadUp = isDpadUp;
             wasDpadDown = isDpadDown;
+            wasA = isA;
         }
-        
+
     }
 
-    static String formatAngle(AngleUnit angleUnit, double angle) {
-        return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
-    }
-
-    static String formatDegrees(double degrees) {
-        return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
-    }
-} 
+}
