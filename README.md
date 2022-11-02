@@ -1,5 +1,5 @@
 # PowerPlay Source Code for 2022
-## the Java Jokers are a Milwaukee based 2021-2022 First Tech Team (FTC). #13828
+## The Servo Squirrels (haters call us the Java Jokers) are a Milwaukee based 2021-2022 First Tech Team (FTC). #13828
 <table>
   <tr>
     <td>
