@@ -25,5 +25,5 @@ android {
 dependencies {
     implementation project(':FtcRobotController')
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
-    implementation 'com.acmerobotics.roadrunner:core:0.5.4' //TODO
+    implementation 'com.acmerobotics.roadrunner:core:0.5.6' //TODO
 }
