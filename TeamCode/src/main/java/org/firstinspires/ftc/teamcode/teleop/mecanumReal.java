@@ -51,7 +51,7 @@ import java.util.Locale;
 
 @TeleOp(name = "mecanumReal", group = "Competition")
 // @Disabled
-public class mecanunReal extends LinearOpMode {
+public class mecanumReal extends LinearOpMode {
 
     public static Orientation angles;
     public static Acceleration gravity;
