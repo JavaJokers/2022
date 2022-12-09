@@ -62,13 +62,14 @@ public class mecanumReal extends LinearOpMode {
    
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
 
         // Declare OpMode members.
         DcMotor lF = hardwareMap.dcMotor.get("front_left");
         DcMotor lB = hardwareMap.dcMotor.get("back_left");
         DcMotor rF = hardwareMap.dcMotor.get("front_right");
         DcMotor rB = hardwareMap.dcMotor.get("back_right");
+        DcMotor motor = hardwareMap.dcMotor.get("motor");
 
         imu.initialize(parameters);
 
@@ -80,18 +81,24 @@ public class mecanumReal extends LinearOpMode {
         rF.setDirection(DcMotor.Direction.REVERSE);
         lB.setDirection(DcMotor.Direction.FORWARD);
         rB.setDirection(DcMotor.Direction.REVERSE);
+        motor.setDirection(DcMotor.Direction.REVERSE);
 
         // Set zero power behavior
         lF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+
+            motor.setPower(0.5);
 
             // Setup a variable for each drive wheel to save power level for telemetry
             double frontLeftPower;
