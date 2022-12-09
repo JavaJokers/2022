@@ -99,10 +99,11 @@ public class mecanumReal extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-
-            double command = control.update(targetPosition, motor.getCurrentPosition());
+            
+            // call "update" method and prepare motorPower
+            double motorPower = control.update(targetPosition, motor.getCurrentPosition());
 			// assign motor the PID output 
-			motor.setPower(command);
+			motor.setPower(motorPower);
 
             // Setup a variable for each drive wheel to save power level for telemetry
             double frontLeftPower;
