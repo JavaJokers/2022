@@ -96,11 +96,16 @@ public class mecanumReal extends LinearOpMode {
         slideOne.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         slideTwo.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        //set encoder behavior
+        slideOne.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        slideTwo.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
 
         //variables
 //        int slidePos = 1;
 
-        PIDController slideController = new PIDController(0.05,0,0,true);
+        PIDController slideOneController = new PIDController(0.05,0,0,true);
+        PIDController slideTwoController = new PIDController(0.05, 0, 0, true);
         int targetPosition = 100;
 
         // Wait for the game to start (driver presses PLAY)
@@ -110,8 +115,8 @@ public class mecanumReal extends LinearOpMode {
         while (opModeIsActive()) {
             
             // call "update" method and prepare motorPower
-            double slideOnePower = slideController.update(targetPosition, slideOne.getCurrentPosition());
-            double slideTwoPower = slideController.update(targetPosition, slideTwo.getCurrentPosition());
+            double slideOnePower = slideOneController.update(targetPosition, slideOne.getCurrentPosition());
+            double slideTwoPower = slideTwoController.update(targetPosition, slideTwo.getCurrentPosition());
 			// assign motor the PID output 
 			slideOne.setPower(slideOnePower);
             slideTwo.setPower(slideTwoPower);
