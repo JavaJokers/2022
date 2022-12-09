@@ -39,7 +39,7 @@ public class PIDController {
      * @param state where our system is
      * @return the signal to send to our motor or other actuator
      */
-    public double output(double reference, double state) {
+    public double update(double reference, double state) {
         double error;
         double derivative;
         // check if we need to unwrap angle

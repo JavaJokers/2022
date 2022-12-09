@@ -98,10 +98,9 @@ public class mecanumReal extends LinearOpMode {
 
 
         //variables
-        int slidePos = 0;
-        double slideLevel = 0;
+//        int slidePos = 1;
 
-        PIDController control = new PIDController(0.05,0,0,true);
+        PIDController slideController = new PIDController(0.05,0,0,true);
         int targetPosition = 100;
 
         // Wait for the game to start (driver presses PLAY)
@@ -111,8 +110,8 @@ public class mecanumReal extends LinearOpMode {
         while (opModeIsActive()) {
             
             // call "update" method and prepare motorPower
-            double slideOnePower = control.update(targetPosition, slideOne.getCurrentPosition());
-            double slideTwoPower = control.update(targetPosition, slideTwo.getCurrentPosition());
+            double slideOnePower = slideController.update(targetPosition, slideOne.getCurrentPosition());
+            double slideTwoPower = slideController.update(targetPosition, slideTwo.getCurrentPosition());
 			// assign motor the PID output 
 			slideOne.setPower(slideOnePower);
             slideTwo.setPower(slideTwoPower);
@@ -159,15 +158,21 @@ public class mecanumReal extends LinearOpMode {
                 rB.setPower(backRightPower);
             }
 
-            if(gamepad1.y){
-                slidePos++;
-            } else if(gamepad1.a){
-                slidePos--;
-            }
-            if(slidePos > 3){
-                slidePos = 3;
-            } else if(slidePos < 1){
-                slidePos = 1;
+//            if(gamepad1.y){
+//                slidePos++;
+//            } else if(gamepad1.a){
+//                slidePos--;
+//            }
+//            if(slidePos > 3){
+//                slidePos = 3;
+//            } else if(slidePos < 1){
+//                slidePos = 1;
+//            }
+
+            if(gamepad1.dpad_up){
+                targetPosition += 0.1;
+            }else if(gamepad1.dpad_down){
+                targetPosition -= 0.1;
             }
 
             // reinitialize field oriented
