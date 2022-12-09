@@ -92,6 +92,7 @@ public class mecanumReal extends LinearOpMode {
         motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         PIDController control = new PIDController(0.05,0,0,true);
+        int targetPosition = 100;
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -99,7 +100,9 @@ public class mecanumReal extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            motor.setPower(0.5);
+            double command = control.update(targetPosition, motor.getCurrentPosition());
+			// assign motor the PID output 
+			motor.setPower(command);
 
             // Setup a variable for each drive wheel to save power level for telemetry
             double frontLeftPower;
