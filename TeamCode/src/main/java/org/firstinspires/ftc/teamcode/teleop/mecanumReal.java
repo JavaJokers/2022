@@ -58,7 +58,6 @@ public class mecanumReal extends LinearOpMode {
 
     BNO055IMU imu = hardwareMap.get(BNO055IMU.class, "imu");
     BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-
    
 
     @Override
@@ -91,6 +90,8 @@ public class mecanumReal extends LinearOpMode {
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        PIDController control = new PIDController(0.05,0,0,true);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
