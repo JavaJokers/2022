@@ -45,6 +45,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.PIDController;
 
 import java.lang.reflect.Parameter;
 import java.util.Locale;
@@ -55,6 +56,9 @@ public class mecanumReal extends LinearOpMode {
 
     public static Orientation angles;
     public static Acceleration gravity;
+//    public static final double posOne = //TODO;
+//    public static final double posTwo = //TODO;
+//    public static final double posThree = //TODO;
 
     BNO055IMU imu = hardwareMap.get(BNO055IMU.class, "imu");
     BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -68,7 +72,8 @@ public class mecanumReal extends LinearOpMode {
         DcMotor lB = hardwareMap.dcMotor.get("back_left");
         DcMotor rF = hardwareMap.dcMotor.get("front_right");
         DcMotor rB = hardwareMap.dcMotor.get("back_right");
-        DcMotor motor = hardwareMap.dcMotor.get("motor");
+        DcMotor slideOne = hardwareMap.dcMotor.get("slide_one");
+        DcMotor slideTwo = hardwareMap.dcMotor.get("slide_two");
 
         imu.initialize(parameters);
 
@@ -80,16 +85,21 @@ public class mecanumReal extends LinearOpMode {
         rF.setDirection(DcMotor.Direction.REVERSE);
         lB.setDirection(DcMotor.Direction.FORWARD);
         rB.setDirection(DcMotor.Direction.REVERSE);
-        motor.setDirection(DcMotor.Direction.REVERSE);
+        slideOne.setDirection(DcMotor.Direction.REVERSE);
+        slideTwo.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Set zero power behavior
         lF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slideOne.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slideTwo.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        //variables
+        int slidePos = 0;
+        double slideLevel = 0;
 
         PIDController control = new PIDController(0.05,0,0,true);
         int targetPosition = 100;
@@ -101,9 +111,11 @@ public class mecanumReal extends LinearOpMode {
         while (opModeIsActive()) {
             
             // call "update" method and prepare motorPower
-            double motorPower = control.update(targetPosition, motor.getCurrentPosition());
+            double slideOnePower = control.update(targetPosition, slideOne.getCurrentPosition());
+            double slideTwoPower = control.update(targetPosition, slideTwo.getCurrentPosition());
 			// assign motor the PID output 
-			motor.setPower(motorPower);
+			slideOne.setPower(slideOnePower);
+            slideTwo.setPower(slideTwoPower);
 
             // Setup a variable for each drive wheel to save power level for telemetry
             double frontLeftPower;
@@ -147,8 +159,19 @@ public class mecanumReal extends LinearOpMode {
                 rB.setPower(backRightPower);
             }
 
+            if(gamepad1.y){
+                slidePos++;
+            } else if(gamepad1.a){
+                slidePos--;
+            }
+            if(slidePos > 3){
+                slidePos = 3;
+            } else if(slidePos < 1){
+                slidePos = 1;
+            }
+
             // reinitialize field oriented
-            if (gamepad1.a && gamepad1.x) {
+            if (gamepad1.left_trigger == 1 && gamepad1.right_trigger == 1) {
                 imu.initialize(parameters);
             }
           
