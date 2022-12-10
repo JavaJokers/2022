@@ -60,10 +60,12 @@ public class mecanumReal extends LinearOpMode {
 
     private int manualOrAuto = 0;
 
+    //button press
     private boolean isX = false;
     private boolean isY = false;
     private boolean isA = false;
 
+    //button press stuff
     private boolean wasX = false;
     private boolean wasY = false;
     private boolean wasA = false;
@@ -110,11 +112,11 @@ public class mecanumReal extends LinearOpMode {
 
 
         //variables
-        int slidePos = 0;
+        int slidePos = 1;
 
         PIDController slideOneController = new PIDController(0.05, 0, 0, true);
         PIDController slideTwoController = new PIDController(0.05, 0, 0, true);
-        int targetPosition = 100;
+        int targetPosition = 12;
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -122,24 +124,29 @@ public class mecanumReal extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
+            //button press stuff
             if ((isX = gamepad1.x) && !wasX) {
                 manualOrAuto++;
             }
 
+            //sets to manual control, or predetermined positions
             if (manualOrAuto % 2 == 0) {
+                //y moves it up one position, a down one
                 if ((isY = gamepad1.y) && !wasY) {
                     slidePos++;
                 } else if ((isA = gamepad1.a) && !wasA) {
                     slidePos--;
                 }
+                //limits inside range
                 if (slidePos > 2) {
                     slidePos = 2;
                 } else if (slidePos < 0) {
                     slidePos = 0;
                 }
+                //sets target position to determined state
                 targetPosition = slidePosArray[slidePos];
             } else {
-
+                //manual control
                 if (gamepad1.dpad_up) {
                     targetPosition += 0.1;
                 } else if (gamepad1.dpad_down) {
@@ -196,7 +203,6 @@ public class mecanumReal extends LinearOpMode {
                 lB.setPower(backLeftPower);
                 rB.setPower(backRightPower);
             }
-
 
 
             // reinitialize field oriented
